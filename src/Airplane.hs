@@ -31,20 +31,22 @@ showRow (x:xs) n= if x == True then (" ✘ |"++(showRow (xs) (n+1)))
 
 showField::Field->Int->String
 showField [] _= "\n"
-showField (x:xs) 1= "\nThis is the enemy field:\n+---+---+---+---+---+---+---+---+---+---+\n"++(showRow x 1)++"+---+---+---+---+---+---+---+---+---+---+\n|"++(showField xs (1+1))
-showField (x:xs) 10= (showRow x 10)++"+---+---+---+---+---+---+---+---+---+---+\n"++(showField xs (10+1))
-showField (x:xs) n= (showRow x n)++"+---+---+---+---+---+---+---+---+---+---+\n|"++(showField xs (n+1))
+showField (x:xs) 1= "\nThis is the enemy field:\n     1   2   3   4   5   6   7   8   9   10\n   +---+---+---+---+---+---+---+---+---+---+\n1  "++(showRow x 1)++"   +---+---+---+---+---+---+---+---+---+---+\n"++(showField xs (1+1))
+showField (x:xs) 10= "10 |"++(showRow x 10)++"   +---+---+---+---+---+---+---+---+---+---+\n"++(showField xs (10+1))
+showField (x:xs) n=show(n)++"  |"++(showRow x n)++"   +---+---+---+---+---+---+---+---+---+---+\n"++(showField xs (n+1))
 
 
 showOwnField::[Plane]->Int->Int->String
-showOwnField planes 1 1= if (occupiedCoord planes 1 1) ==True then "Your field is:\n+---+---+---+---+---+---+---+---+---+---+\n| ✈ |"++(showOwnField planes (1) (1+1) )
-	else "+---+---+---+---+---+---+---+---+---+---+\n|   |"++(showOwnField planes (1) (1+1) )
-showOwnField planes 10 10 = if (occupiedCoord planes 10 10) ==True then " ✈ |"++"\n+---+---+---+---+---+---+---+---+---+---+\n"
-	else "   |"++"\n"++"+---+---+---+---+---+---+---+---+---+---+\n"
-showOwnField planes x 10 =  if (occupiedCoord planes x 10) ==True then " ✈ |"++"\n+---+---+---+---+---+---+---+---+---+---+\n"++(showOwnField planes (x+1) 1 )
-	else "   |"++"\n"++"+---+---+---+---+---+---+---+---+---+---+\n"++(showOwnField planes (x+1) 1 )
-showOwnField planes x y| y==1  =  if (occupiedCoord planes x y) ==True then "| ✈ |"++(showOwnField planes (x) (y+1) )
-	else "|   |"++(showOwnField planes (x) (y+1) )
+showOwnField planes 1 1= if (occupiedCoord planes 1 1) ==True then "Your field is:\n     1   2   3   4   5   6   7   8   9   10\n   +---+---+---+---+---+---+---+---+---+---+\n1  | ✈ |"++(showOwnField planes (1) (1+1) )
+	else "Your field is:\n     1   2   3   4   5   6   7   8   9   10\n   +---+---+---+---+---+---+---+---+---+---+\n1  |   |"++(showOwnField planes (1) (1+1) )
+showOwnField planes 10 10 = if (occupiedCoord planes 10 10) ==True then " ✈ |"++"\n   +---+---+---+---+---+---+---+---+---+---+\n"
+	else "   |"++"\n"++"   +---+---+---+---+---+---+---+---+---+---+\n"
+showOwnField planes x 10 =  if (occupiedCoord planes x 10) ==True then " ✈ |"++"\n   +---+---+---+---+---+---+---+---+---+---+\n"++(showOwnField planes (x+1) 1 )
+	else "   |"++"\n"++"   +---+---+---+---+---+---+---+---+---+---+\n"++(showOwnField planes (x+1) 1 )
+showOwnField planes 10 1 = if (occupiedCoord planes 10 1) ==True then "10 | ✈ |"++(showOwnField planes (10) (1+1) )
+	else "10 |   |"++(showOwnField planes (10) (1+1) )
+showOwnField planes x y| y==1  =  if (occupiedCoord planes x y) ==True then show(x)++"  | ✈ |"++(showOwnField planes (x) (y+1) )
+	else show(x)++"  |   |"++(showOwnField planes (x) (y+1) )
 	|otherwise = if (occupiedCoord planes x y) ==True then " ✈ |"++(showOwnField planes (x) (y+1) )
 	else "   |"++(showOwnField planes (x) (y+1) )
 
